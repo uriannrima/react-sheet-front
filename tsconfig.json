@@ -10,7 +10,7 @@
         "baseUrl": ".",
         "paths": {
             "utils": [
-                "./src/utils/"
+                "./src/utils.js"
             ]
         }
     },
