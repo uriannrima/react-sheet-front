@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "target": "es5",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "outDir": "dist",
+        "jsx": "react",
+        "baseUrl": ".",
+        "paths": {
+            "utils": [
+                "./src/utils/"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
