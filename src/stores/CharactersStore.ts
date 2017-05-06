@@ -1,107 +1,48 @@
-import { observable, computed, autorun, action } from "mobx";
+import { observable, computed, action } from "mobx";
 import * as Utils from "utils";
+import * as Models from "./models";
 
-class Status {
-    @observable healthPoints: number;
-    @observable armorClass: number;
-
-    constructor({ hp = 1, ac = 10 }) {
-        this.healthPoints = hp;
-        this.armorClass = ac;
-    }
-}
-
-class SaveRolls {
-    @observable fortitude: number;
-    @observable reflex: number;
-    @observable will: number;
-
-    constructor({ fort = 1, ref = 1, will = 1 }) {
-        this.fortitude = fort;
-        this.reflex = ref;
-        this.will = will;
-    }
-}
-
-class AttackRolls {
-    @observable roll: string;
-    constructor({ roll }) {
-        this.roll = roll;
-    }
-}
-
-class Weapon {
-    @observable damage: string;
-    @observable hitRoll: number;
-}
-
-class CharacterClass {
-    @observable name: string;
-    @observable level: number;
-    @observable hitDice: string;
-
-    constructor(className: string, level?: number) {
-        this.name = className;
-        this.level = level || 1;
-    }
-
-    @action changeName(name: string) {
-        this.name = name;
-    }
-
-    @action changeLevel(level: number) {
-        this.level = level;
-    }
-}
-
-class WarriorClass extends CharacterClass {
-    constructor(level?: number) {
-        super("Warrior", level);
-        this.hitDice = "d10";
-    }
-}
-
-class RogueClass extends CharacterClass {
-    constructor(level?: number) {
-        super("Rogue", level);
-        this.hitDice = "d6";
-    }
-}
-
-class Character {
-    @observable id;
-    @observable name: string;
-    @observable charClass: CharacterClass;
-    @observable status: Status;
-    @observable saveRolls: SaveRolls;
-    @observable attackRolls: AttackRolls;
-
-    constructor(name: string, characterClass?: CharacterClass, status?: Status, saveRolls?: SaveRolls, attackRolls?: AttackRolls) {
-        this.id = Utils.generateGuid();
-        this.name = name;
-        this.charClass = characterClass || new WarriorClass();
-        this.status = status || new Status({});
-        this.saveRolls = saveRolls || new SaveRolls({});
-        this.attackRolls = attackRolls || new AttackRolls({ roll: "1d10+2" });
-    }
-
-    @action changeClass(className: string) {
-        this.charClass.changeName(className);
-    }
+class CharacterFilter {
+    @observable byName: string = '';
+    @observable byClass: string = '';
+    @observable byLevel: number = 0;
 }
 
 class CharactersStore {
-    @observable characters = [
-        new Character("Naevys", new RogueClass(2)),
-        new Character("Buck"),
-        new Character("Shakyra", new CharacterClass("Ranger", 2)),
-        new Character("Darthus", new CharacterClass("Paladin", 2)),
+    @observable characters: Models.Character[] = [
+        new Models.Character("Naevys", new Models.RogueClass(2)),
+        new Models.Character("Buck"),
+        new Models.Character("Shakyra", new Models.Classe("Ranger", 2)),
+        new Models.Character("Darthus", new Models.Classe("Paladin", 3)),
+        new Models.Character("Kossuth", new Models.Classe("Paladin", 1)),
+        new Models.Character("Riley", new Models.Classe("Beguiler", 2)),
     ];
 
-    @observable filter: string = "";
+    @observable filter: CharacterFilter = new CharacterFilter;
 
-    @computed get getAll(): Character[] {
+    @computed get getAll(): Models.Character[] {
         return this.characters;
+    }
+
+    @computed get getFiltered(): Models.Character[] {
+        const { byName, byClass, byLevel } = this.filter;
+        return this.characters.filter((character) => {
+            if (byName && !new RegExp(byName, "i").test(character.name)) return;
+            if (byClass && !new RegExp(byClass, "i").test(character.classe.name)) return;
+            if (byLevel && character.classe.level <= byLevel) return;
+
+            return character;
+        });
+    }
+
+    @action createCharacter(name: string) {
+        this.characters.push(new Models.Character(name));
+    }
+
+    @action deleteCharacter(id: string) {
+        (<any>this.characters).replace(this.characters.filter((character) => {
+            return character.id !== id;
+        }));
     }
 }
 

@@ -4,6 +4,7 @@ const CommonConfig = require('./webpack.common.js');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = function (env) {
     const path = `${__dirname}/src`;
@@ -15,6 +16,7 @@ module.exports = function (env) {
         },
         plugins: [
             new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.js' }),
+            new ExtractTextPlugin('styles.css'),
             new HtmlWebpackPlugin({ template: 'index.ejs', alwaysWriteToDisk: true }),
             new HtmlWebpackHarddiskPlugin({ outputPath: path }),
         ]

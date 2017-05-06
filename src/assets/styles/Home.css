@@ -1,0 +1,28 @@
+/** Featured animations. */
+.featured-appear {
+  opacity: 0.01;
+}
+
+.featured-appear.featured-appear-active {
+  opacity: 1;
+  transition: opacity .7s ease-in;
+}
+
+.featured-enter {
+  opacity: 0.01;
+}
+
+.featured-enter.featured-enter-active {
+  opacity: 1;
+  transition: opacity .5s ease-in;
+}
+
+.featured-leave {
+  opacity: 1;
+}
+
+.featured-leave.featured-leave-active {
+  opacity: 0.01;
+  width: 0px;
+  transition: opacity .1s ease-in, width .5s ease-in;
+}

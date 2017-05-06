@@ -15,17 +15,20 @@ export default class extends React.Component {
             { query: "/", label: "Home" }
         ];
 
-        const containerStyle = {
-            marginTop: "60px"
-        };
-
         const footerStyle = {
-            position: "absolute",
+            position: "fixed",
+            left: "0",
             bottom: "0",
             width: "100%",
-            height: "50px",
+            height: "30px",
             backgroundColor: "#f5f5f5"
         };
+
+        const containerStyle = {
+            marginTop: "60px",
+            marginBottom: "40px"
+        };
+
         return (
             <div>
                 <Nav items={navItems} location={location} />

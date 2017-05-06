@@ -11,6 +11,9 @@
         "paths": {
             "utils": [
                 "./src/utils.js"
+            ],
+            "styles": [
+                "./src/assets/style/"
             ]
         }
     },

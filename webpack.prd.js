@@ -4,6 +4,7 @@ const CommonConfig = require('./webpack.common.js');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = function (env) {
     const path = `${__dirname}/dist/${env}`;
@@ -18,6 +19,7 @@ module.exports = function (env) {
             new CleanWebpackPlugin([path]),
             new HtmlWebpackPlugin({ minify: { collapseWhitespace: true }, template: 'index.ejs' }),
             new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.[chunkhash].js' }),
+            new ExtractTextPlugin('styles.[chunkhash].css'),
             new webpack.optimize.OccurrenceOrderPlugin(),
             new webpack.optimize.UglifyJsPlugin({
                 minimize: true, beautify: false, comments: false, sourceMap: true,
