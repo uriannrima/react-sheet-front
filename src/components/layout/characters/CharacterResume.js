@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { inject, observer } from "mobx-react";
+import { Link } from "react-router-dom";
 
 @observer
 export default class extends React.Component {
-    removeFeatured = () => {
+    deleteCharacter = () => {
         this.props.onRemoveCharacter(this.props.character.id);
     }
     render() {
@@ -18,7 +19,7 @@ export default class extends React.Component {
                         <h2>{character.name}</h2>
                         <h4>{classe.name} {classe.level}</h4>
                     </div>
-                    <ul class="list-group list-group-flush">
+                    <ul class="list-group">
                         <li class="list-group-item">
                             <span class="glyphicon glyphicon-heart" aria-hidden="true" title="Health Points"></span> {classe.level}{classe.hitDice}
                         </li>
@@ -32,9 +33,13 @@ export default class extends React.Component {
                             <span class="glyphicon glyphicon-share-alt" aria-hidden="true" title="Save Roll"></span> {saveRolls.fortitude} | {saveRolls.reflex} | {saveRolls.will}
                         </li>
                     </ul>
-                    <div class="card-block">
-                        <a href="#" class="btn btn-block btn-primary">More info</a>
-                        <a href="#" class="btn btn-block btn-danger" onClick={this.removeFeatured}>Remove</a>
+                    <div class="card-block text-center">
+                        <Link to={"/character/" + character.id} class="btn btn-space btn-primary">
+                            Editar
+                        </Link>
+                        <a href="#" class="btn btn-space btn-danger" onClick={this.deleteCharacter}>
+                            Excluir
+                        </a>
                     </div>
                 </div>
             </div >

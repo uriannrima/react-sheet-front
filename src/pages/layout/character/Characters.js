@@ -4,7 +4,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 
 import HomeStyle from "styles/Home";
-import Featured from "components/layout/home/Featured";
+import CharacterResume from "components/layout/characters/CharacterResume";
 import InputGroup from "components/shared/InputGroup";
 
 @inject('charactersStore')
@@ -15,12 +15,12 @@ export default class extends React.Component {
     }
 
     render() {
-        const Featureds = this.props.charactersStore.getFiltered.map((character) => {
-            return <Featured
+        const Characters = this.props.charactersStore.getFiltered.map((character) => {
+            return <CharacterResume
                 key={character.id}
                 character={character}
                 onRemoveCharacter={this.removeCharacter}>
-            </Featured>
+            </CharacterResume>
         });
 
         return (
@@ -47,7 +47,7 @@ export default class extends React.Component {
                         transitionAppear={true} transitionAppearTimeout={700}
                         transitionEnter={true} transitionEnterTimeout={700}
                         transitionLeave={true} transitionLeaveTimeout={500}>
-                        {Featureds}
+                        {Characters}
                     </ReactCSSTransitionGroup>
                 </div>
             </div>

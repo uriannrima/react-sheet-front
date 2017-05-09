@@ -1,6 +1,6 @@
-import { observable, computed, action } from "mobx";
+import { observable, computed, action, createTransformer } from "mobx";
 import * as Utils from "utils";
-import * as Models from "./models";
+import * as Models from "models";
 
 class CharacterFilter {
     @observable byName: string = '';
@@ -10,7 +10,7 @@ class CharacterFilter {
 
 class CharactersStore {
     @observable characters: Models.Character[] = [
-        new Models.Character("Naevys", new Models.RogueClass(2)),
+        new Models.Character("Naevys", new Models.Classe("Rogue", 2)),
         new Models.Character("Buck"),
         new Models.Character("Shakyra", new Models.Classe("Ranger", 2)),
         new Models.Character("Darthus", new Models.Classe("Paladin", 3)),
@@ -35,6 +35,10 @@ class CharactersStore {
         });
     }
 
+    public getById = createTransformer((id: string) => {
+        return this.characters.find(c => c.id === id);
+    });
+
     @action createCharacter(name: string) {
         this.characters.push(new Models.Character(name));
     }
@@ -42,6 +46,14 @@ class CharactersStore {
     @action deleteCharacter(id: string) {
         (<any>this.characters).replace(this.characters.filter((character) => {
             return character.id !== id;
+        }));
+    }
+
+    @action saveCharacter(updatedCharacter: Models.Character) {
+        (<any>this.characters).replace(this.characters.filter((character) => {
+            if (character.id === updatedCharacter.id) {
+                
+            }
         }));
     }
 }

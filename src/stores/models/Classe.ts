@@ -18,17 +18,3 @@ export class Classe {
         this.level = level;
     }
 }
-
-export class WarriorClass extends Classe {
-    constructor(level?: number) {
-        super("Warrior", level);
-        this.hitDice = "d10";
-    }
-}
-
-export class RogueClass extends Classe {
-    constructor(level?: number) {
-        super("Rogue", level);
-        this.hitDice = "d6";
-    }
-}

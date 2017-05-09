@@ -1,18 +1,22 @@
 import * as React from 'react';
 import { Route, Link } from "react-router-dom";
 
+// Style
+import LayoutStyle from "styles/Layout";
+
 // Components
 import Nav from "components/layout/Nav";
 import Footer from "components/layout/Footer";
 
 // Pages
-import Home from "./layout/Home";
+import Characters from "./layout/character/Characters";
+import Character from "./layout/character/Character";
 
 export default class extends React.Component {
     render() {
 
         const navItems = [
-            { query: "/", label: "Home" }
+            { query: "/", label: "Characters" }
         ];
 
         const footerStyle = {
@@ -35,7 +39,8 @@ export default class extends React.Component {
                 <div class="container" style={containerStyle}>
                     <div className="row">
                         <div className="col-lg-12">
-                            <Route exact path="/" component={Home}></Route>
+                            <Route exact path="/" component={Characters}></Route>
+                            <Route exact path="/character/:id" component={Character}></Route>
                         </div>
                     </div>
                 </div>

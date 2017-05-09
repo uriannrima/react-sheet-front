@@ -1,6 +1,6 @@
 import { observable, action } from "mobx";
 import * as Utils from "utils";
-import { Classe, AttackRolls, SaveRolls, RogueClass, WarriorClass } from "./";
+import { Classe, AttackRolls, SaveRolls } from "./";
 
 export class Status {
     @observable healthPoints: number;
@@ -23,7 +23,7 @@ export class Character {
     constructor(name: string, classe?: Classe, status?: Status, saveRolls?: SaveRolls, attackRolls?: AttackRolls) {
         this.id = Utils.generateGuid();
         this.name = name;
-        this.classe = classe || new WarriorClass();
+        this.classe = classe || new Classe("Warrior");
         this.status = status || new Status({});
         this.saveRolls = saveRolls || new SaveRolls({});
         this.attackRolls = attackRolls || new AttackRolls({ roll: "1d10+2" });
