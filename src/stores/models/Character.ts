@@ -1,6 +1,6 @@
 import { observable, action } from "mobx";
 import * as Utils from "utils";
-import { Classe, AttackRolls, SaveRolls } from "./";
+import { Classe, AttackRolls, SaveRolls } from "models";
 
 export class Status {
     @observable healthPoints: number;
@@ -13,23 +13,26 @@ export class Status {
 }
 
 export class Character {
-    @observable id;
+    @observable id: string;
     @observable name: string;
     @observable classe: Classe;
     @observable status: Status;
     @observable saveRolls: SaveRolls;
     @observable attackRolls: AttackRolls;
 
-    constructor(name: string, classe?: Classe, status?: Status, saveRolls?: SaveRolls, attackRolls?: AttackRolls) {
-        this.id = Utils.generateGuid();
-        this.name = name;
+    constructor(name?: string, classe?: Classe, status?: Status, saveRolls?: SaveRolls, attackRolls?: AttackRolls) {
+        this.name = name || "";
         this.classe = classe || new Classe("Warrior");
         this.status = status || new Status({});
         this.saveRolls = saveRolls || new SaveRolls({});
         this.attackRolls = attackRolls || new AttackRolls({ roll: "1d10+2" });
     }
 
-    @action changeClass(className: string) {
-        this.classe.changeName(className);
+    update(payload: any) {
+        for (const property in this) {
+            if (typeof payload[property] !== 'undefined') {
+                this[property] = payload[property];
+            }
+        }
     }
 }

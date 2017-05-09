@@ -1,4 +1,4 @@
-import { observable, computed, action, createTransformer } from "mobx";
+import { observable, computed, action, createTransformer, transaction, toJS } from "mobx";
 import * as Utils from "utils";
 import * as Models from "models";
 
@@ -9,14 +9,16 @@ class CharacterFilter {
 }
 
 class CharactersStore {
-    @observable characters: Models.Character[] = [
-        new Models.Character("Naevys", new Models.Classe("Rogue", 2)),
-        new Models.Character("Buck"),
-        new Models.Character("Shakyra", new Models.Classe("Ranger", 2)),
-        new Models.Character("Darthus", new Models.Classe("Paladin", 3)),
-        new Models.Character("Kossuth", new Models.Classe("Paladin", 1)),
-        new Models.Character("Riley", new Models.Classe("Beguiler", 2)),
-    ];
+    @observable characters: Models.Character[] = [];
+
+    constructor() {
+        this.saveOrUpdate(new Models.Character("Naevys", new Models.Classe("Rogue", 2)));
+        this.saveOrUpdate(new Models.Character("Buck"));
+        this.saveOrUpdate(new Models.Character("Shakyra", new Models.Classe("Ranger", 2)));
+        this.saveOrUpdate(new Models.Character("Darthus", new Models.Classe("Paladin", 3)));
+        this.saveOrUpdate(new Models.Character("Kossuth", new Models.Classe("Paladin", 1)));
+        this.saveOrUpdate(new Models.Character("Riley", new Models.Classe("Beguiler", 2)));
+    }
 
     @observable filter: CharacterFilter = new CharacterFilter;
 
@@ -36,25 +38,25 @@ class CharactersStore {
     }
 
     public getById = createTransformer((id: string) => {
-        return this.characters.find(c => c.id === id);
+        return toJS(this.characters.find(c => c.id === id));
     });
 
-    @action createCharacter(name: string) {
-        this.characters.push(new Models.Character(name));
-    }
-
-    @action deleteCharacter(id: string) {
+    @action delete(id: string) {
         (<any>this.characters).replace(this.characters.filter((character) => {
             return character.id !== id;
         }));
     }
 
-    @action saveCharacter(updatedCharacter: Models.Character) {
-        (<any>this.characters).replace(this.characters.filter((character) => {
-            if (character.id === updatedCharacter.id) {
-                
-            }
-        }));
+    @action saveOrUpdate(character: any) {
+        const storeCharacter = this.characters.find((storeCharacter) => storeCharacter.id == character.id);
+        if (storeCharacter) {
+            storeCharacter.update(character);
+        } else {
+            const newCharacter = new Models.Character();
+            newCharacter.id = Utils.generateGuid();
+            newCharacter.update(character);
+            this.characters.push(newCharacter);
+        }
     }
 }
 

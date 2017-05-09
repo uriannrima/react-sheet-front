@@ -11,11 +11,15 @@ import InputGroup from "components/shared/InputGroup";
 @observer
 export default class extends React.Component {
     removeCharacter = (characterId) => {
-        this.props.charactersStore.deleteCharacter(characterId);
+        charactersStore.delete(characterId);
     }
 
     render() {
-        const Characters = this.props.charactersStore.getFiltered.map((character) => {
+
+        const { charactersStore } = this.props;
+        const { filter } = charactersStore;
+
+        const CharactersResume = charactersStore.getFiltered.map((character) => {
             return <CharacterResume
                 key={character.id}
                 character={character}
@@ -27,18 +31,18 @@ export default class extends React.Component {
             <div>
                 <div class="row">
                     <div class="col-md-4">
-                        <InputGroup label={"Filter by Name:"} onChange={(e) => {
-                            this.props.charactersStore.filter.byName = e.currentTarget.value;
+                        <InputGroup label={"Filter by Name:"} value={filter.byName} onChange={(e) => {
+                            filter.byName = e.currentTarget.value;
                         }}></InputGroup>
                     </div>
                     <div class="col-md-4">
-                        <InputGroup label={"Filter by Class Name:"} onChange={(e) => {
-                            this.props.charactersStore.filter.byClass = e.currentTarget.value;
+                        <InputGroup label={"Filter by Class Name:"} value={filter.byClass} onChange={(e) => {
+                            filter.byClass = e.currentTarget.value;
                         }}></InputGroup>
                     </div>
                     <div class="col-md-4">
-                        <InputGroup label={"Filter by Level Above:"} type={"number"} onChange={(e) => {
-                            this.props.charactersStore.filter.byLevel = e.currentTarget.value;
+                        <InputGroup label={"Filter by Level Above:"} value={filter.byLevel} type={"number"} onChange={(e) => {
+                            filter.byLevel = e.currentTarget.value;
                         }}></InputGroup>
                     </div>
                 </div>
@@ -47,7 +51,7 @@ export default class extends React.Component {
                         transitionAppear={true} transitionAppearTimeout={700}
                         transitionEnter={true} transitionEnterTimeout={700}
                         transitionLeave={true} transitionLeaveTimeout={500}>
-                        {Characters}
+                        {CharactersResume}
                     </ReactCSSTransitionGroup>
                 </div>
             </div>

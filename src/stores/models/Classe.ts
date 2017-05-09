@@ -9,12 +9,4 @@ export class Classe {
         this.name = className;
         this.level = level || 1;
     }
-
-    @action changeName(name: string) {
-        this.name = name;
-    }
-
-    @action changeLevel(level: number) {
-        this.level = level;
-    }
 }

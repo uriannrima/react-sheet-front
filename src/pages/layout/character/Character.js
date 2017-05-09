@@ -9,27 +9,37 @@ export default class extends React.Component {
     constructor() {
         super();
     }
+
     componentWillMount() {
         const { charactersStore, match } = this.props;
-        const character = JSON.stringify(charactersStore.getById(this.props.match.params.id));
+        const character = charactersStore.getById(this.props.match.params.id);
 
         this.setState({
-            character: JSON.parse(character)
+            character
         });
     }
+
     saveCharacter = (e) => {
         const { character } = this.state;
         const { charactersStore } = this.props;
-        charactersStore.saveCharacter(character);
+        charactersStore.saveOrUpdate(character);
     }
+
     saveView = (e) => {
         const { character } = this.state;
         this.setState({
             character
         });
     }
+
     render() {
         const { character } = this.state;
+
+        if (!character) {
+            this.props.history.push("/");
+            return (<div />);
+        }
+
         return (
             <div>
                 <div class='form-group'>
