@@ -11,3 +11,14 @@ export function generateGuid() { // Public Domain/MIT
         return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
 }
+
+export function serializable<T extends { new (...args: any[]): {} }>(constructor: T) {
+    return class extends constructor {
+        __typeName__ = constructor.name;
+    }
+}
+
+export function deserialize<T>(data: any): T {
+    var instance = new data[data.__type__]();
+    return instance as T;
+}

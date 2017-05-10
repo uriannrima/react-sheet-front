@@ -1,7 +1,6 @@
 import { observable, action } from "mobx";
 import { JsonProperty } from 'json-object-mapper';
-import { generateGuid } from "utils";
-import { serializable } from "models";
+import { generateGuid, serializable } from "utils";
 
 export class Status {
     @observable healthPoints: number;
