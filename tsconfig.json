@@ -5,12 +5,13 @@
         "moduleResolution": "node",
         "sourceMap": true,
         "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "outDir": "dist",
         "jsx": "react",
         "baseUrl": ".",
         "paths": {
             "utils": [
-                "./src/utils.js"
+                "./src/utils.ts"
             ],
             "styles": [
                 "./src/assets/style/"

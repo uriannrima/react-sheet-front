@@ -1,4 +1,5 @@
 import { observable, computed, action, createTransformer, transaction, toJS } from "mobx";
+import { ObjectMapper } from 'json-object-mapper';
 import * as Utils from "utils";
 import * as Models from "models";
 
@@ -10,15 +11,6 @@ class CharacterFilter {
 
 class CharactersStore {
     @observable characters: Models.Character[] = [];
-
-    constructor() {
-        this.saveOrUpdate(new Models.Character("Naevys", new Models.Classe("Rogue", 2)));
-        this.saveOrUpdate(new Models.Character("Buck"));
-        this.saveOrUpdate(new Models.Character("Shakyra", new Models.Classe("Ranger", 2)));
-        this.saveOrUpdate(new Models.Character("Darthus", new Models.Classe("Paladin", 3)));
-        this.saveOrUpdate(new Models.Character("Kossuth", new Models.Classe("Paladin", 1)));
-        this.saveOrUpdate(new Models.Character("Riley", new Models.Classe("Beguiler", 2)));
-    }
 
     @observable filter: CharacterFilter = new CharacterFilter;
 
@@ -48,15 +40,22 @@ class CharactersStore {
     }
 
     @action saveOrUpdate(character: any) {
-        const storeCharacter = this.characters.find((storeCharacter) => storeCharacter.id == character.id);
-        if (storeCharacter) {
-            storeCharacter.update(character);
+        const newCharacter = ObjectMapper.deserialize(Models.Character, character);
+        console.log(newCharacter);
+
+        // Use "map" like "select" from LINQ.
+        const index = this.characters.map(storeCharacter => storeCharacter.id).indexOf(character.id);
+        if (index >= 0) {
+            this.characters[index] = newCharacter;
         } else {
-            const newCharacter = new Models.Character();
             newCharacter.id = Utils.generateGuid();
-            newCharacter.update(character);
             this.characters.push(newCharacter);
         }
+    }
+
+    @action create(character: Object) {
+        const newCharacter = new Models.Character();
+        console.log(newCharacter);
     }
 }
 

@@ -47,6 +47,20 @@ export default class extends React.Component {
                     </div>
                 </div>
                 <div class="row">
+                    <button onClick={() => {
+                        const char = {
+                            __typeName__: "Character",
+                            name: "Test",
+                            classe: {
+                                __typeName__: "Classe",
+                                name: "Test",
+                                level: 1
+                            }
+                        }
+                        charactersStore.create(char);
+                    }}>Quick Create</button>
+                </div>
+                <div class="row">
                     <ReactCSSTransitionGroup transitionName="featured"
                         transitionAppear={true} transitionAppearTimeout={700}
                         transitionEnter={true} transitionEnterTimeout={700}
