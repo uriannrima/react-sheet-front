@@ -10,6 +10,10 @@ export default class extends React.Component {
     render() {
         const { character } = this.props;
         const { classe, status, saveRolls, attackRolls } = character;
+        const characterClass = character.classe ?
+            (<h4>{classe.name} {classe.level}</h4>) :
+            (<h4>No Class</h4>);
+            
         return (
             <div class="col-md-3" style={{
                 overflow: "hidden"
@@ -17,7 +21,7 @@ export default class extends React.Component {
                 <div class="">
                     <div class="text-center">
                         <h2>{character.name}</h2>
-                        <h4>{classe.name} {classe.level}</h4>
+                        {characterClass}
                     </div>
                     <ul class="list-group">
                         <li class="list-group-item">

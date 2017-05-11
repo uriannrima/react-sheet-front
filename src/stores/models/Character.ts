@@ -1,29 +1,28 @@
 import { observable, action } from "mobx";
-import { JsonProperty } from 'json-object-mapper';
-import { generateGuid, serializable } from "utils";
+import { generateGuid, Serializable } from "utils";
 
 export class Status {
-    @observable healthPoints: number;
-    @observable armorClass: number;
+    @observable healthPoints: number = 10;
+    @observable armorClass: number = 10;
 }
 
 export class SaveRolls {
-    @observable fortitude: number;
-    @observable reflex: number;
-    @observable will: number;
+    @observable fortitude: number = 0;
+    @observable reflex: number = 0;
+    @observable will: number = 0;
 }
 
 export class AttackRolls {
-    @observable roll: string;
+    @observable roll: string = "1d5+1";
 }
 
 export class Classe {
-    @observable name: string;
-    @observable level: number;
-    @observable hitDice: string;
+    @observable name: string = "Warrior";
+    @observable level: number = 1;
+    @observable hitDice: string = "d10";
 }
 
-@serializable
+@Serializable
 export class Character {
     @observable id: string;
     @observable name: string;
@@ -32,11 +31,12 @@ export class Character {
     @observable saveRolls: SaveRolls;
     @observable attackRolls: AttackRolls;
 
-    // update(payload: any) {
-    //     for (const property in this) {
-    //         if (typeof payload[property] !== 'undefined') {
-    //             this[property] = payload[property];
-    //         }
-    //     }
-    // }
+    constructor(id: string, name?: string, classe?: Classe, status?: Status, saveRolls?: SaveRolls, attackRolls?: AttackRolls) {
+        this.id = id;
+        this.name = name;
+        this.classe = classe || new Classe();
+        this.status = status || new Status();
+        this.saveRolls = saveRolls || new SaveRolls();
+        this.attackRolls = attackRolls || new AttackRolls();
+    }
 }

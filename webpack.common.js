@@ -13,7 +13,7 @@ module.exports = {
       'react-router-dom',
       'mobx',
       'mobx-react',
-      'react-addons-css-transition-group'
+      'react-transition-group'
     ]
   },
   module: {

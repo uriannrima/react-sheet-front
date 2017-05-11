@@ -1,3 +1,5 @@
+import * as Models from "models";
+
 // Generate guid for us...
 export function generateGuid() { // Public Domain/MIT
     var d = new Date().getTime();
@@ -12,13 +14,25 @@ export function generateGuid() { // Public Domain/MIT
     });
 }
 
-export function serializable<T extends { new (...args: any[]): {} }>(constructor: T) {
-    return class extends constructor {
-        __typeName__ = constructor.name;
+export function Serializable<T extends { new (...args: any[]): {} }>(constructor: T) {
+    return class Serializable extends constructor {
+        __type__ = constructor.name;
     }
 }
 
-export function deserialize<T>(data: any): T {
-    var instance = new data[data.__type__]();
-    return instance as T;
+export function deserialize(data: any) {
+    try {
+        var instance = new Models[data.__type__]();
+        for (const key in data) {
+            if (typeof data[key] === 'object' && data[key].__type__) {
+                instance[key] = deserialize(data[key]);
+            } else {
+                instance[key] = data[key];
+            }
+        }
+        return instance;
+    } catch (e) {
+        console.log(e);
+        return null;
+    }
 }

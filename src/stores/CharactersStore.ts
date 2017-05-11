@@ -1,5 +1,4 @@
 import { observable, computed, action, createTransformer, transaction, toJS } from "mobx";
-import { ObjectMapper } from 'json-object-mapper';
 import * as Utils from "utils";
 import * as Models from "models";
 
@@ -13,6 +12,10 @@ class CharactersStore {
     @observable characters: Models.Character[] = [];
 
     @observable filter: CharacterFilter = new CharacterFilter;
+
+    constructor() {
+        this.characters.push(new Models.Character("123456", "Shakira"));
+    }
 
     @computed get getAll(): Models.Character[] {
         return this.characters;
@@ -40,7 +43,7 @@ class CharactersStore {
     }
 
     @action saveOrUpdate(character: any) {
-        const newCharacter = ObjectMapper.deserialize(Models.Character, character);
+        const newCharacter = Utils.deserialize(character);
         console.log(newCharacter);
 
         // Use "map" like "select" from LINQ.
@@ -51,11 +54,6 @@ class CharactersStore {
             newCharacter.id = Utils.generateGuid();
             this.characters.push(newCharacter);
         }
-    }
-
-    @action create(character: Object) {
-        const newCharacter = new Models.Character();
-        console.log(newCharacter);
     }
 }
 

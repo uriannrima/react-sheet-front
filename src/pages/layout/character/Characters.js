@@ -1,6 +1,6 @@
 import * as React from "react";
 import { inject, observer } from "mobx-react";
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 
 
 import HomeStyle from "styles/Home";
@@ -10,8 +10,9 @@ import InputGroup from "components/shared/InputGroup";
 @inject('charactersStore')
 @observer
 export default class extends React.Component {
+
     removeCharacter = (characterId) => {
-        charactersStore.delete(characterId);
+        this.props.charactersStore.delete(characterId);
     }
 
     render() {
@@ -49,24 +50,19 @@ export default class extends React.Component {
                 <div class="row">
                     <button onClick={() => {
                         const char = {
-                            __typeName__: "Character",
-                            name: "Test",
-                            classe: {
-                                __typeName__: "Classe",
-                                name: "Test",
-                                level: 1
-                            }
+                            __type__: "Character",
+                            name: "Test"
                         }
-                        charactersStore.create(char);
+                        charactersStore.saveOrUpdate(char);
                     }}>Quick Create</button>
                 </div>
                 <div class="row">
-                    <ReactCSSTransitionGroup transitionName="featured"
+                    <CSSTransitionGroup transitionName="featured"
                         transitionAppear={true} transitionAppearTimeout={700}
                         transitionEnter={true} transitionEnterTimeout={700}
                         transitionLeave={true} transitionLeaveTimeout={500}>
                         {CharactersResume}
-                    </ReactCSSTransitionGroup>
+                    </CSSTransitionGroup>
                 </div>
             </div>
         );
