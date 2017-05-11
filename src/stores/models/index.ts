@@ -1,1 +1,1 @@
-export { Character, Classe, AttackRolls, SaveRolls } from "./Character";
+export { Character, Status, Classe, AttackRolls, SaveRolls } from "./Character";

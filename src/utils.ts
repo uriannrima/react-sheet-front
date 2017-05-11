@@ -14,7 +14,7 @@ export function generateGuid() { // Public Domain/MIT
     });
 }
 
-export function Serializable<T extends { new (...args: any[]): {} }>(constructor: T) {
+export function serializable<T extends { new (...args: any[]): {} }>(constructor: T) {
     return class Serializable extends constructor {
         __type__ = constructor.name;
     }
@@ -32,7 +32,8 @@ export function deserialize(data: any) {
         }
         return instance;
     } catch (e) {
-        console.log(e);
+        console.log("Data:", data);
+        console.log("Error:", e);
         return null;
     }
 }

@@ -32,8 +32,9 @@ class CharactersStore {
         });
     }
 
-    public getById = createTransformer((id: string) => {
-        return toJS(this.characters.find(c => c.id === id));
+    public getById = createTransformer((id: string, asViewObject: boolean = true) => {
+        const character = this.characters.find(c => c.id === id);
+        return asViewObject ? toJS(character) : character;
     });
 
     @action delete(id: string) {

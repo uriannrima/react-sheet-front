@@ -25,6 +25,12 @@ export default class extends React.Component {
         charactersStore.saveOrUpdate(character);
     }
 
+    handleChange = (e, propertyName) => {
+        const { character } = this.state;
+        character[propertyName] = e.currentTarget.value;
+        this.saveView();
+    }
+
     saveView = (e) => {
         const { character } = this.state;
         this.setState({
@@ -41,27 +47,28 @@ export default class extends React.Component {
         }
 
         return (
-            <div>
-                <div class='form-group'>
-                    <InputGroup value={character.name} label={"Character Name:"} onChange={(e) => {
-                        character.name = e.currentTarget.value;
-                        this.saveView();
-                    }}></InputGroup>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class='form-group'>
+                                <InputGroup propertyName={"name"} value={character.name} label={"Character Name:"} onChange={this.handleChange}></InputGroup>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class='form-group'>
+                                <InputGroup propertyName={"playerName"} value={character.playerName} label={"Player Name:"} onChange={this.handleChange}></InputGroup>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                    </div>
                 </div>
-                <div class='form-group'>
-                    <InputGroup value={character.classe.name} label={"Class Name:"} onChange={(e) => {
-                        character.classe.name = e.currentTarget.value;
-                        this.saveView();
-                    }}></InputGroup>
-                </div>
-                <div class='form-group'>
-                    <InputGroup value={character.classe.level} label={"Class Level:"} type="number" onChange={(e) => {
-                        character.classe.level = e.currentTarget.value;
-                        this.saveView();
-                    }}></InputGroup>
-                </div>
-                <div class="controls">
-                    <a href="#" onClick={this.saveCharacter} class="btn btn-success">Salvar </a>
+                <div class="col-md-12">
+                    <div class="controls">
+                        <a href="#" onClick={this.saveCharacter} class="btn btn-success">Salvar</a>
+                    </div>
                 </div>
             </div>
         );

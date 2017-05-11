@@ -9,9 +9,8 @@ export default class extends React.Component {
                     placeholder={this.props.placeholder || ""}
                     type={this.props.type || "text"}
                     class="form-control"
-                    onChange={(e) => this.props.onChange && this.props.onChange(e)} />
+                    onChange={(e) => { this.props.onChange && this.props.onChange(e, this.props.propertyName) }} />
             </div>
         );
-
     }
 }
