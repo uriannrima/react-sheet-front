@@ -2,21 +2,20 @@ import * as React from "react";
 import { inject, observer } from "mobx-react";
 import InputGroup from "components/shared/InputGroup";
 import * as Models from "models";
+import { linkState } from "extensions/linkState";
 
 @inject('charactersStore')
 @observer
 export default class extends React.Component {
-    constructor() {
-        super();
-    }
+    constructor(props) {
+        super(props);
 
-    componentWillMount() {
         const { charactersStore, match } = this.props;
         const character = charactersStore.getById(this.props.match.params.id);
 
-        this.setState({
+        this.state = {
             character
-        });
+        };
     }
 
     saveCharacter = (e) => {
@@ -25,17 +24,8 @@ export default class extends React.Component {
         charactersStore.saveOrUpdate(character);
     }
 
-    handleChange = (e, propertyName) => {
-        const { character } = this.state;
-        character[propertyName] = e.currentTarget.value;
-        this.saveView();
-    }
-
-    saveView = (e) => {
-        const { character } = this.state;
-        this.setState({
-            character
-        });
+    onChangeFinish = (e) => {
+        console.log(e);
     }
 
     render() {
@@ -52,12 +42,20 @@ export default class extends React.Component {
                     <div class="row">
                         <div class="col-md-6">
                             <div class='form-group'>
-                                <InputGroup propertyName={"name"} value={character.name} label={"Character Name:"} onChange={this.handleChange}></InputGroup>
+                                <InputGroup
+                                    label={"Character Name:"}
+                                    value={character.name}
+                                    onChange={linkState(this, 'character.name')}>
+                                </InputGroup>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class='form-group'>
-                                <InputGroup propertyName={"playerName"} value={character.playerName} label={"Player Name:"} onChange={this.handleChange}></InputGroup>
+                                <InputGroup
+                                    label={"Class Name:"}
+                                    value={character.classe.name}
+                                    onChange={linkState(this, 'character.classe.name')}>
+                                </InputGroup>
                             </div>
                         </div>
                     </div>

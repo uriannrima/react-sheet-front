@@ -18,6 +18,9 @@
             ],
             "models": [
                 "./src/stores/models/"
+            ],
+            "extensions": [
+                "./src/extensions/"
             ]
         }
     },

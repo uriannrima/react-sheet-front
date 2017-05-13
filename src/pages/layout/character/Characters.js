@@ -1,6 +1,7 @@
 import * as React from "react";
 import { inject, observer } from "mobx-react";
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import { linkState } from "extensions/linkState";
 
 
 import HomeStyle from "styles/Home";
@@ -32,9 +33,7 @@ export default class extends React.Component {
             <div>
                 <div class="row">
                     <div class="col-md-4">
-                        <InputGroup label={"Filter by Name:"} value={filter.byName} onChange={(e) => {
-                            filter.byName = e.currentTarget.value;
-                        }}></InputGroup>
+                        <InputGroup label={"Filter by Name:"} value={filter.byName} onChange={linkState(charactersStore, 'filter.byName')}></InputGroup>
                     </div>
                     <div class="col-md-4">
                         <InputGroup label={"Filter by Class Name:"} value={filter.byClass} onChange={(e) => {
