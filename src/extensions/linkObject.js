@@ -1,6 +1,6 @@
 import { changePropertyRecursively } from "./changePropertyRecursively";
 
-function createComponentHandler(target, path, options) {
+function createObjectHandler(target, path, options) {
     return (event) => {
         if (options && options.onChangeBegin) options.onChangeBegin(event);
 
@@ -9,23 +9,23 @@ function createComponentHandler(target, path, options) {
         const walk = path.split('.');
         const key = walk.shift();
         if (walk.length == 0) {
-           target.setState({ [key]: value });
+            target[key] = value;
         } else {
-            const mainObject = target.state[key];
+            const mainObject = target[key];
             changePropertyRecursively(mainObject, walk, value);
-            target.setState({ [key]: mainObject });
+            target[key] = mainObject;
         }
 
         if (options && options.onChangeFinish) options.onChangeFinish(event);
     };
 }
 
-export function linkState(component, path, options) {
+export function linkObject(target, path, options) {
     if (path) {
-        return createComponentHandler(component, path, options);
+        return createObjectHandler(target, path, options);
     }
 
-    const cache = component.__linkStateHandlers || (component.__linkStateHandlers = {});
+    const cache = target.__linkStateHandlers || (target.__linkStateHandlers = {});
 
-    return cache[key] || (cache[key] = createComponentHandler(component, key));
-};
+    return cache[key] || (cache[key] = createObjectHandler(target, key));
+}
